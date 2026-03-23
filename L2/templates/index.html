@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Recipe Generator</title>
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+
+    <h1>Recipe Generator</h1>
+
+    <p>Enter ingredients:</p>
+
+    <input type="text" id="ingredients" placeholder="e.g. rice, tomato, garlic">
+
+    <button onclick="generateRecipe()">Generate Recipe</button>
+
+    <div id="result"></div>
+
+    <script>
+        async function generateRecipe() {
+            const ingredients = document.getElementById("ingredients").value;
+
+            const response = await fetch("http://localhost:5001/generate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    ingredients: ingredients
+                })
+            });
+
+            const data = await response.json();
+
+            document.getElementById("result").innerText = data.recipe;
+        }
+    </script>
+
+</body>
+</html>

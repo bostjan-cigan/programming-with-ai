@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Recipe Generator</title>
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+
+    <main class="container">
+        <h1>Recipe Generator</h1>
+        <p class="subtitle">Enter your ingredients and we'll suggest recipes.</p>
+
+        <form id="recipeForm" class="recipe-form" novalidate>
+            <div class="form-group">
+                <label for="ingredients">Ingredients <span class="required">*</span></label>
+                <input
+                    type="text"
+                    id="ingredients"
+                    name="ingredients"
+                    placeholder="e.g. chicken, rice, garlic"
+                    required
+                    autocomplete="off"
+                >
+                <span class="error-message" id="ingredientsError" aria-live="polite"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="cuisine">Cuisine type</label>
+                <input type="text" id="cuisine" name="cuisine" placeholder="e.g. Italian, Thai (optional)">
+            </div>
+
+            <div class="form-group">
+                <label for="diet">Dietary preference</label>
+                <input type="text" id="diet" name="diet" placeholder="e.g. vegetarian, gluten-free (optional)">
+            </div>
+
+            <div class="form-group">
+                <label for="maxTime">Max cooking time (minutes)</label>
+                <input type="number" id="maxTime" name="maxTime" placeholder="e.g. 30 (optional)" min="1" max="480">
+            </div>
+
+            <button type="submit" id="submitBtn">Generate Recipe</button>
+        </form>
+
+        <div id="result" class="result" aria-live="polite"></div>
+    </main>
+
+    <script>
+        const form = document.getElementById("recipeForm");
+        const ingredientsInput = document.getElementById("ingredients");
+        const ingredientsError = document.getElementById("ingredientsError");
+        const resultDiv = document.getElementById("result");
+        const submitBtn = document.getElementById("submitBtn");
+
+        function showError(message) {
+            ingredientsError.textContent = message;
+            ingredientsInput.classList.add("invalid");
+        }
+
+        function clearError() {
+            ingredientsError.textContent = "";
+            ingredientsInput.classList.remove("invalid");
+        }
+
+        function validateIngredients() {
+            const value = ingredientsInput.value.trim();
+            if (!value) {
+                showError("Please enter at least one ingredient.");
+                return false;
+            }
+            clearError();
+            return true;
+        }
+
+        ingredientsInput.addEventListener("blur", validateIngredients);
+        ingredientsInput.addEventListener("input", () => {
+            if (ingredientsError.textContent) clearError();
+        });
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            if (!validateIngredients()) {
+                ingredientsInput.focus();
+                return;
+            }
+
+            const cuisine = document.getElementById("cuisine").value.trim() || null;
+            const diet = document.getElementById("diet").value.trim() || null;
+            const maxTimeInput = document.getElementById("maxTime").value;
+            const maxTime = maxTimeInput ? parseInt(maxTimeInput, 10) : null;
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Generating…";
+            resultDiv.textContent = "";
+            resultDiv.classList.remove("error");
+
+            try {
+                const response = await fetch("/generate", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        ingredients: ingredientsInput.value.trim(),
+                        cuisine,
+                        diet,
+                        max_time: maxTime
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    resultDiv.textContent = data.error || "Something went wrong. Please try again.";
+                    resultDiv.classList.add("error");
+                    return;
+                }
+
+                resultDiv.textContent = data.recipe;
+            } catch (err) {
+                resultDiv.textContent = "Could not connect. Make sure the server is running.";
+                resultDiv.classList.add("error");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Generate Recipe";
+            }
+        });
+    </script>
+
+</body>
+</html>

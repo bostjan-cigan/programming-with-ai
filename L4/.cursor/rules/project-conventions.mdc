@@ -1,0 +1,13 @@
+---
+description: Project conventions for AI Recipe Generator - Flask, simple frontend, beginner-friendly
+alwaysApply: true
+---
+
+# Project Conventions
+
+- **Backend**: Always use Python Flask for backend examples.
+- **Code changes**: Explain code changes before applying them.
+- **Frontend**: Keep frontend simple HTML and CSS (no frameworks).
+- **Explanations**: Use beginner-friendly explanations.
+- **Recipe output**: When generating recipe results, prefer structured output.
+- **LM Studio**: Use OpenAI-compatible client patterns for LM Studio Server examples.

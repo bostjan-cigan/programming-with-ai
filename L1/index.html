@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Recipe Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Recipe Generator</h1>
+
+    <p>Enter ingredients:</p>
+
+    <input type="text" id="ingredients" placeholder="e.g. rice, tomato, garlic">
+
+    <button onclick="generateRecipe()">Generate Recipe</button>
+
+    <div id="result"></div>
+
+    <script>
+        function generateRecipe() {
+            const ingredients = document.getElementById("ingredients").value;
+
+            document.getElementById("result").innerText =
+                "Ingredients received: " + ingredients;
+        }
+    </script>
+
+</body>
+</html>

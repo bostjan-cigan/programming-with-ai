@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px auto;
+    max-width: 500px;
+    line-height: 1.5;
+}
+
+h1 {
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+p {
+    color: #555;
+    margin-bottom: 8px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+/* Highlights the input when you click into it */
+input:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/* Button changes slightly when you hover over it */
+button:hover {
+    background-color: #45a049;
+}
+
+#result {
+    margin-top: 24px;
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border-left: 4px solid #4CAF50;
+    min-height: 20px;
+}
